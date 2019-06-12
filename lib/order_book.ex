@@ -1,18 +1,15 @@
 defmodule OrderBook do
-  @moduledoc """
-  Documentation for OrderBook.
-  """
+  use Application
 
-  @doc """
-  Hello world.
+  def start(_type, _args) do
+    import Supervisor.Spec
 
-  ## Examples
+    # Define workers and child supervisors to be supervised
+    children = [
+      supervisor(UrlShortener.UrlManager, [])
+    ]
 
-      iex> OrderBook.hello()
-      :world
-
-  """
-  def hello do
-    :world
+    opts = [strategy: :one_for_one, name: UrlShortener.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 end
